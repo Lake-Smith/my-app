@@ -1,10 +1,9 @@
 import './App.css';
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer} from "react-leaflet";
-import Markers from './Markers'
-import {useState, Component} from 'react';
+import { Marker, Popup} from "react-leaflet";
+import {Icon} from "leaflet";
 
-function App(){
+export default function Markers(){
 
   var request = new XMLHttpRequest();
 
@@ -23,29 +22,33 @@ function App(){
   };
   
   request.send();
+  
+  const markers = [
+    {
+      geocode: [35.615162,-82.568466],
+      popUp: "ponder hall"
+    },
+    {
+      geocode: [35.618800, -82.564690],
+      popUp: "lapinksi"
+    }
+  ];
+  
+  const customIcon = new Icon({
+    iconUrl: "https://cdn-icons-png.flaticon.com/128/2776/2776000.png",
+    iconSize: [38,38]
+  })
 
-  console.log(request);
-
-  const [blankMark, makers] = useState();
-
-  function handleClick(){ 
-    
-  }
-
-  return (
+  return (  
     <div>
-    <MapContainer center={[35.616112 , -82.564629]} zoom={16}>
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {blankMark}
-    </MapContainer>
-    <button onClick={handleClick}>click me</button>
+        {markers.map(marker => (
+            <Marker position={marker.geocode} icon={customIcon}>
+                <Popup>{marker.popUp}</Popup>
+            </Marker>
+            ))
+        }
     </div>
+    
   );
+
 }
-
-export default App;
-
-// 5b3ce3597851110001cf6248a44e1f898e7a4c30885cd3b7b6a738e3
